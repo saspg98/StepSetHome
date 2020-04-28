@@ -75,7 +75,7 @@ public class CountDown extends AppCompatActivity {
             }
         } else {
             if (tTime >= DURATION) {
-                sharedPref.setWallet_balance(sharedPref.getWallet_balance() + ((long) Math.floor(tTime / (DURATION))) * 10);
+                sharedPref.setWallet_balance(sharedPref.getWallet_balance() - ((long) Math.floor(tTime / (DURATION))) * 10);
                 sharedPref.setLastCountDownTime(lTime + tTime - (tTime % DURATION + pTime));
                 sharedPref.setPrevDiff(tTime % DURATION);
             }
