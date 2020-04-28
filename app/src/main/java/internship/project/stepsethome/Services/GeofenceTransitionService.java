@@ -27,6 +27,7 @@ public class GeofenceTransitionService extends IntentService {
 
     private void updateLocationStatus(boolean status) {
         if(status){
+            Log.d("SERVICE", "In Home");
             if(sharedPref.checkNewUser()){
                 sharedPref.setWallet_balance(0);
                 sharedPref.setNewSession(false);
@@ -36,45 +37,35 @@ public class GeofenceTransitionService extends IntentService {
                 sharedPref.setPrevDiff(0);
                 return;
             }
-            if(sharedPref.getLocationStatus()){
                 long cTime = new Date(System.currentTimeMillis()).getTime();
                 long pTime = sharedPref.getPrevDiff();
                 long lTime = sharedPref.getLastCountDownTime();
                 long tTime = pTime + cTime - lTime;
-                sharedPref.setWallet_balance(sharedPref.getWallet_balance()+(float)(Math.floor(tTime/(DURATION)))*10);
-                sharedPref.setPrevDiff(tTime%DURATION);
-                sharedPref.setLastCountDownTime(lTime + tTime - (tTime%DURATION + pTime));
-            }else{
-                long cTime = new Date(System.currentTimeMillis()).getTime();
-                long pTime = sharedPref.getPrevDiff();
-                long lTime = sharedPref.getLastCountDownTime();
-                long tTime = pTime + cTime - lTime;
-                sharedPref.setWallet_balance(sharedPref.getWallet_balance()-(float)(Math.floor(tTime/DURATION))*10);
-                sharedPref.setPrevDiff(tTime%DURATION);
                 sharedPref.setLocationStatus(true);
-                if(tTime>=DURATION)
-                    sharedPref.setLastCountDownTime(lTime + tTime - (tTime%DURATION + pTime));
-                else
-                    sharedPref.setLastCountDownTime(cTime);
+            if (tTime >= DURATION) {
+                sharedPref.setLastCountDownTime(lTime + tTime - (tTime % DURATION + pTime));
+                sharedPref.setWallet_balance(sharedPref.getWallet_balance() - ((long) Math.floor(tTime / DURATION)) * 10);
+                sharedPref.setPrevDiff(tTime % DURATION);
             }
+//
         }else{
+            Log.d("SERVICE", "Away Home");
             long cTime = new Date(System.currentTimeMillis()).getTime();
             long pTime = sharedPref.getPrevDiff();
             long lTime = sharedPref.getLastCountDownTime();
             long tTime = pTime + cTime - lTime;
-            sharedPref.setWallet_balance(sharedPref.getWallet_balance()+(float)(Math.floor(tTime/DURATION))*10);
-            sharedPref.setPrevDiff(tTime%DURATION);
-            sharedPref.setLocationStatus(true);
-            if(tTime>=DURATION)
-                sharedPref.setLastCountDownTime(lTime + tTime - (tTime%DURATION + pTime));
-            else
-                sharedPref.setLastCountDownTime(cTime);
+            sharedPref.setLocationStatus(false);
+            if (tTime >= DURATION) {
+                sharedPref.setLastCountDownTime(lTime + tTime - (tTime % DURATION + pTime));
+                sharedPref.setWallet_balance(sharedPref.getWallet_balance() + ((long) Math.floor(tTime / DURATION)) * 10);
+                sharedPref.setPrevDiff(tTime % DURATION);
+            }
         }
     }
 
     private boolean getGeofenceTransitionDetails(int geoFenceTransition) {
         boolean status = false;
-        if ( geoFenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER | geoFenceTransition == Geofence.GEOFENCE_TRANSITION_DWELL)
+        if (geoFenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER)
             status = true;
         else if ( geoFenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT )
             status = false;
@@ -95,13 +86,8 @@ public class GeofenceTransitionService extends IntentService {
     }
 
     @Override
-    public void onStart(@Nullable Intent intent, int startId) {
-        super.onStart(intent, startId);
-        sharedPref = SharedPref.getInstance(this);
-    }
-
-    @Override
     protected void onHandleIntent(@Nullable Intent intent) {
+        sharedPref = SharedPref.getInstance(this);
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
         Log.d(TAG, "geofencing event started!!");
         if (geofencingEvent == null) {

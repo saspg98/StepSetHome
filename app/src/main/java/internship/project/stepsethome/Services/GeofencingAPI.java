@@ -13,7 +13,6 @@ public class GeofencingAPI {
 
     private static final String GEOFENCE_REQ_ID = "SSH Geofence";
     private static final float GEOFENCE_RADIUS = 100.0f; // in meters
-    private static final int DURATION = 120000;
 
     private Context context;
     private SharedPref sharedPref;
@@ -35,8 +34,7 @@ public class GeofencingAPI {
                 .setRequestId(GEOFENCE_REQ_ID)
                 .setCircularRegion( lat,lng, GEOFENCE_RADIUS)
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes( Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT | Geofence.GEOFENCE_TRANSITION_DWELL)
-                .setLoiteringDelay(DURATION)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
                 .build();
     }
 
@@ -45,7 +43,7 @@ public class GeofencingAPI {
         Log.d("GEOFENCE", "Creating Geofence Request");
 
         return new GeofencingRequest.Builder()
-                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER | GeofencingRequest.INITIAL_TRIGGER_DWELL | GeofencingRequest.INITIAL_TRIGGER_EXIT)
+                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
                 .addGeofence(geofence)
                 .build();
     }

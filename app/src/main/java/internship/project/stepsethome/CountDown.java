@@ -50,9 +50,7 @@ public class CountDown extends AppCompatActivity {
             }
 
             public void onFinish() {
-                long cTime = new Date(System.currentTimeMillis()).getTime();
-                mTimeRemaining = DURATION - (cTime - sharedPref.getLastCountDownTime()) % DURATION;
-                startTimer(mTimeRemaining);
+                updateWallet();
             }
         }.start();
     }
@@ -61,8 +59,29 @@ public class CountDown extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Log.e("TIMER","starting timer");
-        long cTime =  new Date(System.currentTimeMillis()).getTime();
-        mTimeRemaining = DURATION - (cTime-sharedPref.getLastCountDownTime())%DURATION;
+        updateWallet();
+    }
+
+    private void updateWallet() {
+        long cTime = new Date(System.currentTimeMillis()).getTime();
+        long pTime = sharedPref.getPrevDiff();
+        long lTime = sharedPref.getLastCountDownTime();
+        long tTime = pTime + cTime - lTime;
+        if (sharedPref.getLocationStatus()) {
+            if (tTime >= DURATION) {
+                sharedPref.setWallet_balance(sharedPref.getWallet_balance() + ((long) Math.floor(tTime / (DURATION))) * 10);
+                sharedPref.setLastCountDownTime(lTime + tTime - (tTime % DURATION + pTime));
+                sharedPref.setPrevDiff(tTime % DURATION);
+            }
+        } else {
+            if (tTime >= DURATION) {
+                sharedPref.setWallet_balance(sharedPref.getWallet_balance() + ((long) Math.floor(tTime / (DURATION))) * 10);
+                sharedPref.setLastCountDownTime(lTime + tTime - (tTime % DURATION + pTime));
+                sharedPref.setPrevDiff(tTime % DURATION);
+            }
+        }
+        cTime = new Date(System.currentTimeMillis()).getTime();
+        mTimeRemaining = DURATION - (cTime - sharedPref.getLastCountDownTime());
         startTimer(mTimeRemaining);
     }
 

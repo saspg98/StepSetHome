@@ -53,14 +53,16 @@ public class SharedPref {
         editor.putBoolean(NEW_SESSION,bool);
         editor.commit();
     }
-    public float getWallet_balance(){
-        float wallet = pref.getFloat(WALLET_BALANCE,0);
+
+    public long getWallet_balance() {
+        long wallet = pref.getLong(WALLET_BALANCE, 0);
         Log.d("WALLET","Amount in wallet" + wallet);
         return wallet;
     }
-    public void setWallet_balance(float balance){
+
+    public void setWallet_balance(long balance) {
         Log.d("WALLET","Amount added successfully");
-        editor.putFloat(WALLET_BALANCE,balance);
+        editor.putLong(WALLET_BALANCE, balance);
         editor.commit();
     }
 

@@ -71,7 +71,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     protected void onDestroy() {
-        removeGeofence();
         sharedPref.setNewSession(true);
         super.onDestroy();
     }
