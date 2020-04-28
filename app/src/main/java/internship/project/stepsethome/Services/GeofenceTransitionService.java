@@ -21,8 +21,8 @@ public class GeofenceTransitionService extends IntentService {
 
     private SharedPref sharedPref;
 
-    public GeofenceTransitionService(String name) {
-        super(name);
+    public GeofenceTransitionService() {
+        super(TAG);
     }
 
     private void updateLocationStatus(boolean status) {

@@ -50,8 +50,9 @@ public class CountDown extends AppCompatActivity {
             }
 
             public void onFinish() {
-                countdownTimerText.setText(DURATION);
-                this.start();
+                long cTime = new Date(System.currentTimeMillis()).getTime();
+                mTimeRemaining = DURATION - (cTime - sharedPref.getLastCountDownTime()) % DURATION;
+                startTimer(mTimeRemaining);
             }
         }.start();
     }
