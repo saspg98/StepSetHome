@@ -1,4 +1,4 @@
-package internship.project.stepsethome;
+package internship.project.stepsethome.Utils;
 
 import android.Manifest;
 import android.content.Context;

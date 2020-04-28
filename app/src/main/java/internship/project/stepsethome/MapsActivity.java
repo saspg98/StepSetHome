@@ -1,7 +1,6 @@
 package internship.project.stepsethome;
 
 import android.Manifest;
-import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,14 +18,14 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
+import internship.project.stepsethome.Services.GeofenceTransitionService;
+import internship.project.stepsethome.Services.GeofencingAPI;
+import internship.project.stepsethome.Services.GoogleMapsUtil;
+import internship.project.stepsethome.Utils.AppPermissionChecker;
+import internship.project.stepsethome.Utils.SharedPref;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -72,6 +71,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     protected void onDestroy() {
+        removeGeofence();
         sharedPref.setNewSession(true);
         super.onDestroy();
     }
@@ -157,7 +157,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if ( geoFencePendingIntent != null )
             return geoFencePendingIntent;
         Intent intent = new Intent(this, GeofenceTransitionService.class);
-        geoFencePendingIntent =  PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT );
+        geoFencePendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         return geoFencePendingIntent;
     }
 

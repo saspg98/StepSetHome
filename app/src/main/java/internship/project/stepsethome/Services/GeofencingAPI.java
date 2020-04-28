@@ -1,10 +1,12 @@
-package internship.project.stepsethome;
+package internship.project.stepsethome.Services;
 
 import android.content.Context;
 import android.util.Log;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingRequest;
+
+import internship.project.stepsethome.Utils.SharedPref;
 
 
 public class GeofencingAPI {

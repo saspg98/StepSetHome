@@ -1,4 +1,4 @@
-package internship.project.stepsethome;
+package internship.project.stepsethome.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

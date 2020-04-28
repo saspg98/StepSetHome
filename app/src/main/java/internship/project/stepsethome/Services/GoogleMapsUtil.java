@@ -1,4 +1,4 @@
-package internship.project.stepsethome;
+package internship.project.stepsethome.Services;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -17,6 +17,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.snackbar.Snackbar;
+
+import internship.project.stepsethome.LocationManagerUtil;
+import internship.project.stepsethome.MapsActivity;
+import internship.project.stepsethome.R;
+import internship.project.stepsethome.Utils.SharedPref;
 
 public class GoogleMapsUtil {
 

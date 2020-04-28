@@ -1,7 +1,6 @@
-package internship.project.stepsethome;
+package internship.project.stepsethome.Services;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
+import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
@@ -12,31 +11,18 @@ import com.google.android.gms.location.GeofencingEvent;
 import java.util.Date;
 import java.util.List;
 
-public class GeofenceTransitionService extends BroadcastReceiver {
+import androidx.annotation.Nullable;
+import internship.project.stepsethome.Utils.SharedPref;
+
+public class GeofenceTransitionService extends IntentService {
 
     private static final String TAG = "GeoIntentService";
     private static final long DURATION = 120000;
 
     private SharedPref sharedPref;
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        sharedPref = SharedPref.getInstance(context);
-        GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
-        Log.d(TAG, "geofencing event started!!");
-        if (geofencingEvent == null) {
-            Log.d(TAG, "geofencing event is null need to check again!!!");
-            return;
-        }
-        if (geofencingEvent.hasError()) {
-            String errorString = getErrorString(geofencingEvent.getErrorCode());
-            Log.wtf(TAG, "GeofencingEvent error " + errorString);
-        } else {
-            int transaction = geofencingEvent.getGeofenceTransition();
-            List<Geofence> geofences = geofencingEvent.getTriggeringGeofences();
-            boolean geofenceTransitionDetails = getGeofenceTransitionDetails(transaction);
-            updateLocationStatus(geofenceTransitionDetails);
-        }
+    public GeofenceTransitionService(String name) {
+        super(name);
     }
 
     private void updateLocationStatus(boolean status) {
@@ -105,6 +91,31 @@ public class GeofenceTransitionService extends BroadcastReceiver {
                 return "Too many pending intents";
             default:
                 return "Unknown error.";
+        }
+    }
+
+    @Override
+    public void onStart(@Nullable Intent intent, int startId) {
+        super.onStart(intent, startId);
+        sharedPref = SharedPref.getInstance(this);
+    }
+
+    @Override
+    protected void onHandleIntent(@Nullable Intent intent) {
+        GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
+        Log.d(TAG, "geofencing event started!!");
+        if (geofencingEvent == null) {
+            Log.d(TAG, "geofencing event is null need to check again!!!");
+            return;
+        }
+        if (geofencingEvent.hasError()) {
+            String errorString = getErrorString(geofencingEvent.getErrorCode());
+            Log.wtf(TAG, "GeofencingEvent error " + errorString);
+        } else {
+            int transaction = geofencingEvent.getGeofenceTransition();
+            List<Geofence> geofences = geofencingEvent.getTriggeringGeofences();
+            boolean geofenceTransitionDetails = getGeofenceTransitionDetails(transaction);
+            updateLocationStatus(geofenceTransitionDetails);
         }
     }
 }
