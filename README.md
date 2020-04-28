@@ -14,3 +14,6 @@ The application might give unexpected result related to wrong coins update or wr
 
 ##### Note:
 The application can be improved if not using geofencing api because service gives update about the user location with delays and not at all sometimes. Using difference of the current location and previous location of user should used to check whether user is in the geofence or not. 
+
+##### Issues:
+Pertains with some devices like mine. That might be the reson for the aforementioned notes. Refer https://stackoverflow.com/questions/53631565/android-geofencing-not-triggering-in-some-mobile-like-oneplus-xiaomi-etc
