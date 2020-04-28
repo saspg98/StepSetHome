@@ -45,7 +45,7 @@ public class GeofencingAPI {
         Log.d("GEOFENCE", "Creating Geofence Request");
 
         return new GeofencingRequest.Builder()
-                .setInitialTrigger( GeofencingRequest.INITIAL_TRIGGER_ENTER | GeofencingRequest.INITIAL_TRIGGER_EXIT)
+                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER | GeofencingRequest.INITIAL_TRIGGER_DWELL | GeofencingRequest.INITIAL_TRIGGER_EXIT)
                 .addGeofence(geofence)
                 .build();
     }
