@@ -17,3 +17,8 @@ The application can be improved if not using geofencing api because service give
 
 ##### Issues:
 Pertains with some devices like mine. That might be the reson for the aforementioned notes. Refer https://stackoverflow.com/questions/53631565/android-geofencing-not-triggering-in-some-mobile-like-oneplus-xiaomi-etc
+
+#### How to use ?
+* Just enter the API key in debug->values->google map xml.
+* Rebuild the project in android studio.
+* Sit back and let android do its magic!!
